@@ -2,6 +2,8 @@
 #define HEXPIP_HEXPIPRULES_H
 
 #include <vector>
+#include <array>
+#include <cstdint>
 
 using diceCount = std::array<int, 7>;
 using diceList = std::vector<std::uint8_t>;

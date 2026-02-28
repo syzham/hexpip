@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.20)
 project(HexPip)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -12,15 +12,16 @@ FetchContent_MakeAvailable(glfw)
 find_package(OpenGL REQUIRED)
 
 add_executable(HexPip main.cpp external/glad/glad.c
-        src/Window/window.cpp
-        src/Window/window.h
-        src/graphics/graphics.cpp
-        src/graphics/graphics.h
+        src/window/Window.cpp
+        src/window/Window.h
+        src/graphics/Graphics.cpp
+        src/graphics/Graphics.h
         src/core/event/Event.h
         src/core/event/MouseEvent.h
         src/core/InputManager.cpp
         src/core/InputManager.h
-        src/core/GameStates/gameStateMachine.cpp
+        src/core/gameStates/gameStateMachine.cpp
+        src/core/gameStates/gameStateMachine.h
         src/core/gameStates/states/menuState.cpp
         src/core/gameStates/states/playingState.cpp
         src/core/gameStates/states/pausedState.cpp
@@ -83,7 +84,6 @@ add_executable(HexPip main.cpp external/glad/glad.c
         src/component/UI/UIDiceSprites.h
         src/systems/UI/DiceSpriteSystem.cpp
         src/systems/UI/DiceSpriteSystem.h
-        src/core/gameStates/gameStateMachine.h
         src/core/gameStates/states/playingState.h
         src/core/gameStates/states/pausedState.h
         src/core/gameStates/states/menuState.h
@@ -103,17 +103,25 @@ add_custom_command(TARGET HexPip POST_BUILD
 include(CTest)
 enable_testing()
 
-add_executable(HexPipTests
-        tests/test_main.cpp
-        tests/test_scoring.cpp
-        src/gameplay/HexPipRules.h
-        src/gameplay/HexPipRules.cpp
-        tests/test_possibleMoves.cpp
-)
+if (BUILD_TESTING)
+    include(FetchContent)
+    FetchContent_Declare(
+            doctest
+            GIT_REPOSITORY https://github.com/doctest/doctest.git
+    )
+    FetchContent_MakeAvailable(doctest)
 
-target_include_directories(HexPipTests PRIVATE
-        ${CMAKE_SOURCE_DIR}/external
-        ${CMAKE_SOURCE_DIR}/src
-)
+    add_executable(HexPipTests
+            tests/test_main.cpp
+            tests/test_scoring.cpp
+            tests/test_possibleMoves.cpp
+            src/gameplay/HexPipRules.cpp
+            src/gameplay/HexPipRules.h
+    )
 
-add_test(NAME HexPipTests COMMAND HexPipTests)
+    target_link_libraries(HexPipTests PRIVATE doctest::doctest)
+    target_include_directories(HexPipTests PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+    include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
+    doctest_discover_tests(HexPipTests)
+endif()
