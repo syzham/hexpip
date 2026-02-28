@@ -1,0 +1,6 @@
+#ifndef HEXPIP_REROLLBUTTONTAG_H
+#define HEXPIP_REROLLBUTTONTAG_H
+
+struct ReRollButtonTag {};
+
+#endif //HEXPIP_REROLLBUTTONTAG_H

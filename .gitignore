@@ -39,3 +39,8 @@
 
 # debug information files
 *.dwo
+
+/.idea
+/build
+
+*.DS_Store
