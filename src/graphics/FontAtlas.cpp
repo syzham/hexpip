@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <fstream>
+#include <vector>
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "stb/stb_truetype.h"

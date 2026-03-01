@@ -1,0 +1,25 @@
+name: Tests
+
+on:
+  pull_request:
+
+jobs:
+  ctest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build \
+            libgl1-mesa-dev xorg-dev
+
+      - name: Configure
+        run: cmake -S . -B build -G Ninja -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --target HexPipTests
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure --verbose

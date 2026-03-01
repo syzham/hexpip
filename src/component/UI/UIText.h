@@ -2,6 +2,7 @@
 #define HEXPIP_UITEXT_H
 
 #include <string>
+#include <cstdint>
 
 struct UIText {
 	enum class AlignH : std::uint8_t { Left, Center };
