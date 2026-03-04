@@ -1,4 +1,6 @@
-[![Hex & Pip](https://github-readme-tech-stack.vercel.app/api/cards?title=Hex+%26+Pip&align=center&titleAlign=center&lineCount=1&bg=%230D1117&badge=%23161B22&border=%2321262D&titleColor=%2358A6FF&line1=cplusplus%2CC%2B%2B20%2C00599C%3Bcmake%2CCMake%2C064F8C%3Bopengl%2COpenGL%2C5586A4%3B)
+<div align="center">
+    <img src="https://github-readme-tech-stack.vercel.app/api/cards?title=Hex+%26+Pip&align=center&titleAlign=center&lineCount=1&bg=%230D1117&badge=%23161B22&border=%2321262D&titleColor=%2358A6FF&line1=cplusplus%2CC%2B%2B20%2C00599C%3Bcmake%2CCMake%2C064F8C%3Bopengl%2COpenGL%2C5586A4%3B" alt="Hex & Pip" />
+</div>
 
 A single-player roguelike dice game based on the folk game "Farkle."
 
@@ -41,15 +43,6 @@ If the player manages to accumulate the final score, they can spend their points
   - scoring logic
   - upgrade interactions
   - roll evaluation
-
-## Tech Stack
-
-- **Language**: C++20
-- **Build**: CMake
-- **Window/Input**: GLFW
-- **OpenGL loader**: glad (vendored)
-- **Rendering**: OpenGL 3.3 core profile
-- **Architecture**: ECS+TDD
 
 ## Build & Run
 
