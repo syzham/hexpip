@@ -1,6 +1,5 @@
-# Hex & Pips
+[![Hex & Pip](https://github-readme-tech-stack.vercel.app/api/cards?title=Hex+%26+Pip&align=center&titleAlign=center&lineCount=1&bg=%230D1117&badge=%23161B22&border=%2321262D&titleColor=%2358A6FF&line1=cplusplus%2CC%2B%2B20%2C00599C%3Bcmake%2CCMake%2C064F8C%3Bopengl%2COpenGL%2C5586A4%3B)
 
----
 A single-player roguelike dice game based on the folk game "Farkle."
 
 This project is from scratch built around:
@@ -11,7 +10,6 @@ This project is from scratch built around:
 
 ## Gameplay
 
----
 At the start of the game, six dice are rolled. The player must create combos to score points.  
 Points are as follows:
 - 1: 100 points
@@ -34,7 +32,6 @@ If the player manages to accumulate the final score, they can spend their points
 
 ## Goals
 
----
 - Cross-platform: Windows/Mac/Linux
 - Minimal external libraries (only what’s necessary)
 - Clean architecture:
@@ -47,7 +44,6 @@ If the player manages to accumulate the final score, they can spend their points
 
 ## Tech Stack
 
----
 - **Language**: C++20
 - **Build**: CMake
 - **Window/Input**: GLFW
@@ -57,7 +53,6 @@ If the player manages to accumulate the final score, they can spend their points
 
 ## Build & Run
 
----
 ### Prerequisites:
 - A C++20 compiler
   - **Windows**: MSVC
@@ -65,14 +60,62 @@ If the player manages to accumulate the final score, they can spend their points
   - **Linux**: GCC/Clang
 - CMake
 
-### Build (CLI)
+### Using Build Scripts (Recommended)
+
+**macOS/Linux:**
+```bash
+# Debug build and run
+./build.sh Debug --run
+
+# Release build
+./build.sh Release
+
+# Run tests
+./build.sh Debug --test
+
+# Clean build
+./build.sh Debug --clean
+```
+
+**Windows (Command Prompt):**
+```cmd
+REM Debug build and run
+build.bat Debug --run
+
+REM Release build
+build.bat Release
+
+REM Run tests
+build.bat Debug --test
+
+REM Clean build
+build.bat Debug --clean
+```
+
+**Windows (PowerShell):**
+```powershell
+# Debug build and run
+pwsh .\build.ps1 -Run
+
+# Release build
+pwsh .\build.ps1 -Config Release
+
+# Run tests
+pwsh .\build.ps1 -Test
+
+# Clean build
+pwsh .\build.ps1 -Clean
+```
+
+### Manual Build (CLI)
 
 From the project root:
 ```bash
-cmake -S . -B build
-cmake --build build -j
+cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/Debug --parallel
 ```
-Run:
+Run (from the executable directory):
 ```bash
-./build/HexPip
+cd build/Debug
+./HexPip
 ```
