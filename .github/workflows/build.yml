@@ -1,0 +1,68 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build - ${{ matrix.os }} (${{ matrix.config }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        config: [Debug, Release]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build \
+            libgl1-mesa-dev xorg-dev
+
+      - name: Configure
+        run: cmake -S . -B build/${{ matrix.config }} -DCMAKE_BUILD_TYPE=${{ matrix.config }}
+
+      - name: Build
+        run: cmake --build build/${{ matrix.config }} --parallel --config ${{ matrix.config }}
+
+      - name: Verify Assets (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          if [ ! -d "build/${{ matrix.config }}/assets" ]; then
+            echo "Assets folder not found!"
+            exit 1
+          fi
+          ls -la build/${{ matrix.config }}/assets
+
+      - name: Verify Assets (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $assetsPath = "build/${{ matrix.config }}/assets"
+          if (-not (Test-Path $assetsPath)) {
+            $assetsPath = "build/${{ matrix.config }}/${{ matrix.config }}/assets"
+          }
+          if (-not (Test-Path $assetsPath)) {
+            Write-Error "Assets folder not found!"
+            exit 1
+          }
+          Get-ChildItem $assetsPath
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HexPip-${{ runner.os }}-${{ matrix.config }}
+          path: |
+            build/${{ matrix.config }}/HexPip*
+            build/${{ matrix.config }}/assets/**
+            build/${{ matrix.config }}/${{ matrix.config }}/HexPip*
+            build/${{ matrix.config }}/${{ matrix.config }}/assets/**
+          if-no-files-found: error
