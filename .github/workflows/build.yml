@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -33,8 +36,27 @@ jobs:
       - name: Build
         run: cmake --build build/${{ matrix.config }} --parallel --config ${{ matrix.config }}
 
-      - name: Verify Assets (Linux/macOS)
-        if: runner.os != 'Windows'
+      - name: Verify Assets (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          if [ -d "build/${{ matrix.config }}/HexPip.app" ]; then
+            # Release build - assets inside bundle
+            if [ ! -d "build/${{ matrix.config }}/HexPip.app/Contents/MacOS/assets" ]; then
+              echo "Assets folder not found in bundle!"
+              exit 1
+            fi
+            ls -la build/${{ matrix.config }}/HexPip.app/Contents/MacOS/assets
+          else
+            # Debug build - assets next to executable
+            if [ ! -d "build/${{ matrix.config }}/assets" ]; then
+              echo "Assets folder not found!"
+              exit 1
+            fi
+            ls -la build/${{ matrix.config }}/assets
+          fi
+
+      - name: Verify Assets (Linux)
+        if: runner.os == 'Linux'
         run: |
           if [ ! -d "build/${{ matrix.config }}/assets" ]; then
             echo "Assets folder not found!"
@@ -56,13 +78,43 @@ jobs:
           }
           Get-ChildItem $assetsPath
 
+      - name: Package Artifact (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          mkdir -p package
+          if [ -d "build/${{ matrix.config }}/HexPip.app" ]; then
+            # Release build creates .app bundle
+            cp -r build/${{ matrix.config }}/HexPip.app package/
+          else
+            # Debug build is standalone executable
+            cp build/${{ matrix.config }}/HexPip package/
+            cp -r build/${{ matrix.config }}/assets package/
+          fi
+
+      - name: Package Artifact (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p package
+          cp build/${{ matrix.config }}/HexPip package/
+          cp -r build/${{ matrix.config }}/assets package/
+
+      - name: Package Artifact (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path package
+          $exePath = "build/${{ matrix.config }}/HexPip.exe"
+          $assetsPath = "build/${{ matrix.config }}/assets"
+          if (-not (Test-Path $exePath)) {
+            $exePath = "build/${{ matrix.config }}/${{ matrix.config }}/HexPip.exe"
+            $assetsPath = "build/${{ matrix.config }}/${{ matrix.config }}/assets"
+          }
+          Copy-Item $exePath package/
+          Copy-Item -Recurse $assetsPath package/
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: HexPip-${{ runner.os }}-${{ matrix.config }}
-          path: |
-            build/${{ matrix.config }}/HexPip*
-            build/${{ matrix.config }}/assets/**
-            build/${{ matrix.config }}/${{ matrix.config }}/HexPip*
-            build/${{ matrix.config }}/${{ matrix.config }}/assets/**
+          path: package/
           if-no-files-found: error

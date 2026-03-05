@@ -5,6 +5,7 @@
 #include <typeindex>
 #include <unordered_map>
 #include <vector>
+#include <stdexcept>
 
 using Entity = std::uint32_t;
 
