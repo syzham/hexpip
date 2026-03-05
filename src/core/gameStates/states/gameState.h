@@ -2,6 +2,7 @@
 #define HEXPIP_GAMESTATE_H
 
 #include <functional>
+#include <string>
 
 #include "core/Registry.h"
 

@@ -53,6 +53,12 @@ If the player manages to accumulate the final score, they can spend their points
   - **Linux**: GCC/Clang
 - CMake
 
+### Build Types
+- **Debug**: Includes debug symbols, shows console window for debugging output
+- **Release**: Optimized, no console window (Windows/macOS only)
+- **RelWithDebInfo**: Optimized with debug info, no console window
+- **MinSizeRel**: Size-optimized
+
 ### Using Build Scripts (Recommended)
 
 **macOS/Linux:**
@@ -107,8 +113,15 @@ From the project root:
 cmake -S . -B build/Debug -DCMAKE_BUILD_TYPE=Debug
 cmake --build build/Debug --parallel
 ```
-Run (from the executable directory):
+
+Run the executable:
 ```bash
-cd build/Debug
-./HexPip
+# Debug build (all platforms)
+./build/Debug/HexPip              # macOS/Linux
+build\Debug\HexPip.exe            # Windows
+
+# Release build
+./build/Release/HexPip            # Linux
+open build/Release/HexPip.app     # macOS (creates .app bundle)
+build\Release\HexPip.exe          # Windows
 ```

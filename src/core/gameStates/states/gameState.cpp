@@ -9,6 +9,7 @@
 #include "component/UI/UILayout.h"
 
 #include "graphics/TextureLoader.h"
+#include "core/Path.h"
 
 void GameState::Update(float deltaTime) {
 	if (!m_stateMachine) return;
@@ -52,8 +53,8 @@ void GameState::OnResume() {}
 
 uint32_t GameState::CreateButton(const std::string &text, float anchorX, float anchorY, float offsetX, float offsetY, float w, float h, const std::function<void()> &onClick) {
 	const uint32_t button = m_registry.create();
-	const GLuint hoverButton = TextureLoader::LoadTexture2D("assets/ButtonPressed.png");
-	const GLuint idleButton = TextureLoader::LoadTexture2D("assets/Button.png");
+	const GLuint hoverButton = TextureLoader::LoadTexture2D(Path::GetAssetPath("assets/ButtonPressed.png"));
+	const GLuint idleButton = TextureLoader::LoadTexture2D(Path::GetAssetPath("assets/Button.png"));
 	auto idle = UISprite{idleButton, 0, 0, 1, 1, 1, 1, 1, 1};
 	const auto hover = UISprite{hoverButton, 0, 0, 1, 1, 1, 1, 1, 1};
 

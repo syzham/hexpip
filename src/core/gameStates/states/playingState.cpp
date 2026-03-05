@@ -29,6 +29,7 @@
 #include "systems/Gameplay/UpdateTextSystem.h"
 
 #include "graphics/TextureLoader.h"
+#include "core/Path.h"
 
 void PlayingState::OnEnter() {
     GameState::OnEnter();
@@ -108,12 +109,12 @@ void PlayingState::CreateDice(const float x, const float y) {
 
     };
 
-    const GLuint one = TextureLoader::LoadTexture2D("assets/One.png");
-    const GLuint two = TextureLoader::LoadTexture2D("assets/Two.png");
-    const GLuint three = TextureLoader::LoadTexture2D("assets/Three.png");
-    const GLuint four = TextureLoader::LoadTexture2D("assets/Four.png");
-    const GLuint five = TextureLoader::LoadTexture2D("assets/Five.png");
-    const GLuint six = TextureLoader::LoadTexture2D("assets/Six.png");
+    const GLuint one = TextureLoader::LoadTexture2D(Path::GetAssetPath("assets/One.png"));
+    const GLuint two = TextureLoader::LoadTexture2D(Path::GetAssetPath("assets/Two.png"));
+    const GLuint three = TextureLoader::LoadTexture2D(Path::GetAssetPath("assets/Three.png"));
+    const GLuint four = TextureLoader::LoadTexture2D(Path::GetAssetPath("assets/Four.png"));
+    const GLuint five = TextureLoader::LoadTexture2D(Path::GetAssetPath("assets/Five.png"));
+    const GLuint six = TextureLoader::LoadTexture2D(Path::GetAssetPath("assets/Six.png"));
     auto oneSprite = UISprite{one, 0, 0, 1, 1, 1, 1, 1, 1};
     auto twoSprite = UISprite{two, 0, 0, 1, 1, 1, 1, 1, 1};
     auto threeSprite = UISprite{three, 0, 0, 1, 1, 1, 1, 1, 1};

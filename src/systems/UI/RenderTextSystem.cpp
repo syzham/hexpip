@@ -4,6 +4,7 @@
 #include "component/UI/UIText.h"
 #include "component/UI/UITransform.h"
 #include "core/Registry.h"
+#include "core/Path.h"
 
 #include <algorithm>
 #include <string_view>
@@ -42,7 +43,7 @@ void RenderTextSystem(Registry& R, Graphics& G)
     static FontAtlas font;
     static bool loaded = false;
     if (!loaded) {
-        loaded = font.LoadFromTTF("assets/fonts/JetBrains.ttf", 24.0f);
+        loaded = font.LoadFromTTF(Path::GetAssetPath("assets/fonts/JetBrains.ttf").c_str(), 24.0f);
     }
     if (!loaded || font.textureID == 0) return;
 

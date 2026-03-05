@@ -1,7 +1,7 @@
 #ifndef HEXPIP_ENDROUNDSYSTEM_H
 #define HEXPIP_ENDROUNDSYSTEM_H
 
-#include <iosfwd>
+#include <string>
 
 class Registry;
 struct GameContext;

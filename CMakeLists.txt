@@ -79,6 +79,7 @@ add_executable(HexPip main.cpp external/glad/glad.c
         src/systems/UI/RenderTextSystem.cpp
         src/core/RandomManager.cpp
         src/core/RandomManager.h
+        src/core/Path.h
         src/gameplay/HexPipRules.cpp
         src/gameplay/HexPipRules.h
         src/component/UI/UIDiceSprites.h
@@ -93,12 +94,34 @@ add_executable(HexPip main.cpp external/glad/glad.c
 target_include_directories(HexPip PRIVATE ${CMAKE_SOURCE_DIR}/external ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(HexPip PRIVATE glfw OpenGL::GL)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+    if(WIN32)
+        target_link_options(HexPip PRIVATE /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup)
+    elseif(APPLE)
+        set_target_properties(HexPip PROPERTIES
+            MACOSX_BUNDLE TRUE
+            MACOSX_BUNDLE_BUNDLE_NAME "HexPip"
+            MACOSX_BUNDLE_GUI_IDENTIFIER "com.hexpip.game"
+            MACOSX_BUNDLE_INFO_STRING "HexPip - A roguelike dice game"
+            MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0"
+            MACOSX_BUNDLE_BUNDLE_VERSION "1.0"
+        )
+    endif()
+endif()
+
 add_custom_command(TARGET HexPip POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/assets
         $<TARGET_FILE_DIR:HexPip>/assets
         COMMENT "Copying assets to runtime output directory"
 )
+
+if(APPLE AND (CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
+    add_custom_command(TARGET HexPip POST_BUILD
+        COMMAND codesign --force --deep --sign - "$<TARGET_BUNDLE_DIR:HexPip>"
+        COMMENT "Ad-hoc code signing the bundle"
+    )
+endif()
 
 include(CTest)
 enable_testing()
