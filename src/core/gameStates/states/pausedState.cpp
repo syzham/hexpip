@@ -25,8 +25,8 @@ void PausedState::OnEnter() {
 }
 
 void PausedState::Update(const float deltaTime) {
-    if (m_stateMachine->GetInputManager().isKeyDown(53)) {
-        m_stateMachine->GetInputManager().setKeyDown(53, false);
+    if (m_stateMachine->GetInputManager().isKeyDown(KeyCode::ESC)) {
+        m_stateMachine->GetInputManager().setKeyDown(KeyCode::ESC, false);
         m_popRequested = true;
     }
 

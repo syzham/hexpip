@@ -10,6 +10,30 @@ enum MouseButton
     Mouse5 = 1 << 5
 };
 
+namespace KeyCode {
+#ifdef _WIN32
+    constexpr int ESC = 1;
+    constexpr int ENTER = 28;
+    constexpr int SPACE = 57;
+    constexpr int BACKSPACE = 14;
+    constexpr int TAB = 15;
+    constexpr int LEFT = 331;
+    constexpr int UP = 328;
+    constexpr int RIGHT = 333;
+    constexpr int DOWN = 336;
+#else
+    constexpr int ESC = 53;
+    constexpr int ENTER = 36;
+    constexpr int SPACE = 49;
+    constexpr int BACKSPACE = 51;
+    constexpr int TAB = 48;
+    constexpr int LEFT = 123;
+    constexpr int UP = 126;
+    constexpr int RIGHT = 124;
+    constexpr int DOWN = 125;
+#endif
+}
+
 class InputManager {
 public:
     void mouseEvent(float x, float y);
