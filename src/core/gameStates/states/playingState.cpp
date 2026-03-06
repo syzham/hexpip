@@ -67,8 +67,9 @@ void PlayingState::OnEnter() {
 }
 
 void PlayingState::Update(const float deltaTime) {
-    if (m_stateMachine->GetInputManager().isKeyDown(53)) {
+    if (m_stateMachine->GetInputManager().isKeyDown(53) || m_stateMachine->GetInputManager().isKeyDown(256)) {
         m_stateMachine->GetInputManager().setKeyDown(53, false);
+        m_stateMachine->GetInputManager().setKeyDown(256, false);
         m_pushStateRequest = "Paused";
     }
 
