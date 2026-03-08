@@ -31,7 +31,7 @@ void DiceSetSystem(Registry& R, bool& isBanked) {
 			ui.enabled = false;
 		} else if (!diceLeft) {
 			dice.isBanked = false;
-			isBanked = true;
+			isBanked = false;
 			dice.isSelected = false;
 			ui.enabled = true;
 			dice.isFinalised = false;
