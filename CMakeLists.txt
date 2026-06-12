@@ -34,8 +34,6 @@ add_executable(HexPip main.cpp external/glad/glad.c
         src/component/UI/UISprite.h
         src/component/UI/UIButton.h
         src/component/UI/UIInteractable.h
-        src/core/Registry.h
-        src/core/Registry.cpp
         external/stb/stb_image.h
         src/graphics/TextureLoader.cpp
         src/graphics/TextureLoader.h
@@ -96,7 +94,16 @@ add_executable(HexPip main.cpp external/glad/glad.c
         src/component/UI/UIButtonSprites.h
 )
 
-target_include_directories(HexPip PRIVATE ${CMAKE_SOURCE_DIR}/external ${CMAKE_SOURCE_DIR}/src)
+# PAP_INCLUDE_DIR can be overridden on the command line; defaults to the
+# sibling checkout used during development.
+set(PAP_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/../ProjectAnchorPoint/include"
+    CACHE PATH "Path to ProjectAnchorPoint public headers (provides core/Registry.h, core/System.h, etc.)")
+
+target_include_directories(HexPip PRIVATE
+    ${CMAKE_SOURCE_DIR}/external
+    ${CMAKE_SOURCE_DIR}/src
+    ${PAP_INCLUDE_DIR}
+)
 target_link_libraries(HexPip PRIVATE glfw OpenGL::GL)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
@@ -148,7 +155,7 @@ if (BUILD_TESTING)
     )
 
     target_link_libraries(HexPipTests PRIVATE doctest::doctest)
-    target_include_directories(HexPipTests PRIVATE ${CMAKE_SOURCE_DIR}/src)
+    target_include_directories(HexPipTests PRIVATE ${CMAKE_SOURCE_DIR}/src ${PAP_INCLUDE_DIR})
 
     include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
     doctest_discover_tests(HexPipTests)
